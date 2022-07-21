@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes, useNavigate  } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import categories from './components/categories'
 // import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
 
 function App() {
@@ -63,6 +64,12 @@ function App() {
     const data = await res.json()
 
     return data
+
+    setCategories(
+      categories.map((category) =>
+      category.id === id ? { ...category, name: result.name } : category
+      )
+    )
   }
 
     } catch (err) {
@@ -87,6 +94,7 @@ function App() {
            />
            <button type="submit" >Login</button>
          </form>
+          {/* <categories categories={categories}/> */}
        </div>
   )
 }
