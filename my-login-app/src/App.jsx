@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route, Routes, useNavigate  } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import './App.css'
 // import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
@@ -6,6 +7,9 @@ import './App.css'
 function App() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isFound, setFound] = useState(false)
+  const [categories, setCategories] = useState([])
+
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -45,6 +49,21 @@ function App() {
             }
         })
 
+        // Fetch Categories
+      const getCategories = async () => {
+      const res = await fetch('https://edeaf-api-staging.azurewebsites.net/v1/admin/categories')
+      const data = await res.json()
+      const result = data.data
+      return result
+    }
+
+    // Fetch category (1)
+    const getCategory = async (id) => {
+    const res = await fetch(`https://edeaf-api-staging.azurewebsites.net/v1/admin/categories/${id}`)
+    const data = await res.json()
+
+    return data
+  }
 
     } catch (err) {
       console.log(err);
@@ -52,23 +71,23 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-      <input
-          type="email"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+        <div className="App">
+         <form onSubmit={handleSubmit}>
+         <input
+             type="email"
+             value={email}
+             placeholder="Email"
+             onChange={(e) => setEmail(e.target.value)}
+           />
+           <input
+             type="password"
+             value={password}
+             placeholder="Password"
+             onChange={(e) => setPassword(e.target.value)}
+           />
+           <button type="submit" >Login</button>
+         </form>
+       </div>
   )
 }
 
